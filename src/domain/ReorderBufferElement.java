@@ -1,11 +1,11 @@
 package domain;
 
 public class ReorderBufferElement {
-    public boolean Busy;
-    public Process CurrentProcess;
+    public boolean busy;
+    public InstructionElement currentInstruction;
 
     public ReorderBufferElement() {
-        Busy = false;
-        CurrentProcess = null;
+        busy = false;
+        currentInstruction = null;
     }
 }
