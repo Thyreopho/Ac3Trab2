@@ -1,7 +1,6 @@
 import java.util.List;
 
 import components.InstructionsQueue;
-import domain.InstructionElement;
 import domain.RegisterElement;
 import domain.ReorderBufferElement;
 import domain.ReservationStationElement;

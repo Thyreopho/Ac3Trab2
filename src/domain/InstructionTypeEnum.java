@@ -3,11 +3,12 @@ package domain;
 public enum InstructionTypeEnum {
     ADD,
     SUB,
-    BEQ,
+    ADDI,
+    MUL,
+    DIV,
     LW,
     SW,
-    ADDI,
     J,
-    BLT,
     BNE,
+    BEQ
 }
