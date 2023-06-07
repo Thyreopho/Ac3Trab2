@@ -1,9 +1,9 @@
-import java.util.List;
+import java.util.function.Function;
 
 import components.InstructionsQueue;
-import domain.RegisterElement;
-import domain.ReorderBufferElement;
-import domain.ReservationStationElement;
+import components.ReorderBuffer;
+import components.ReservationStation;
+import components.Register;
 
 public class InterfaceIO {
 
@@ -11,7 +11,40 @@ public class InterfaceIO {
         return null;
     }
 
-    public static void renderTable(List<ReorderBufferElement> reorderBuffer, List<ReservationStationElement> reservationStation, List<RegisterElement> registers) {
+    /* private static String iterationToString(int size, Function<Integer, String> exe) {
+        String response = "";
+        for (int i = 0; i < size; i++) {
+            response += exe.apply(i);
+        }
+        return response;
+    } */
 
+    public static void renderTable(ReorderBuffer reorderBuffer, ReservationStation reservationStation, Register registers) {
+        String[] lines = new String[21/*  + reorderBuffer.size() + reservationStation. */];
+        int i = 0;
+        lines[i++] = "╔═╗";
+        lines[i++] = "║ Reorder Buffer ║";
+        lines[i++] = "╚═╝";
+        lines[i++] = "┌─┬─┬─┬─┬─┬─┐";
+        lines[i++] = "│ Entry │ Busy │ Intruction │ State │ Destination │ Value │";
+        lines[i++] = "├─┴─┴─┴─┴─┴─┤";
+        lines[i++] = "└─┘";
+        lines[i++] = "╔═╗";
+        lines[i++] = "║ Reservation Station ║";
+        lines[i++] = "╚═╝";
+        lines[i++] = "┌─┬─┬─┬─┬─┬─┬─┬─┬─┐";
+        lines[i++] = "│ Name │ Busy │ Op │ Vj │ Vk │ Qj │ Qk │ Dest │ A │";
+        lines[i++] = "├─┴─┴─┴─┴─┴─┴─┴─┴─┤";
+        lines[i++] = "└─┘";
+        lines[i++] = "╔═╗";
+        lines[i++] = "║ Registers ║";
+        lines[i++] = "╚═╝";
+        lines[i++] = "┌─┬─┬─┐";
+        lines[i++] = "│ Field │ Reorder # │ Busy │";
+        lines[i++] = "├─┴─┴─┤";
+        lines[i++] = "└─┘";
+        // ┄ ┆
+        //║ ═ ╔ ╗ ╚ ╝
+        //└ ┘ ┌ ─ ┐ │ ├ ┤ ┬ ┴ ┼
     }
 }

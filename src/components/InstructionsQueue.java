@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import domain.InstructionElement;
 
+//TODO: não discartar elementos da fila, a mesma deve permitir desvios para linhas anteriores
 public class InstructionsQueue {
 
     private Integer bufferSize;

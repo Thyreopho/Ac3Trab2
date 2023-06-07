@@ -4,14 +4,18 @@ import domain.RegisterElement;
 
 public class Register {
     
-    private int size = 10;
-    private RegisterElement[] data = new RegisterElement[size];
+    private RegisterElement[] data;
     
-    public Register() {
+    public Register(int size) {
+        data = new RegisterElement[size];
         for(int i = 0; i < size; i++){
             data[0].value = 0;
             data[0].busy = false;
         }
+    }
+
+    public int size() {
+        return data.length;
     }
 
     public RegisterElement get(int index) {

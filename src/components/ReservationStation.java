@@ -1,5 +1,6 @@
 package components;
 
+import domain.InstructionElement;
 import domain.InstructionTypeEnum;
 import domain.ReservationStationElement;
 
@@ -8,6 +9,7 @@ public class ReservationStation {
     private int size = 7;
     private ReservationStationElement[] data = new ReservationStationElement[size];
 
+    // TODO: ReservationStationElement deve ser instanciado com "new ReservationStationElement()"
     public ReservationStation() {
         int aux = 0;
         data[aux].name = "Load1";
@@ -50,8 +52,22 @@ public class ReservationStation {
         for(int i = 0; i < size; i++){
             data[i].busy = false;
             data[i].currentInstruction = null;
-        }     
+        }
     }
 
-    
+    public boolean Add(InstructionElement instruction) {
+        var type = instruction.instruction;
+        for (var station : data) {
+            if(!station.busy){
+                for (var acceptedTypes : station.acceptedTypes){
+                    if(acceptedTypes == type){
+                        station.busy = true;
+                        station.currentInstruction = instruction;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
