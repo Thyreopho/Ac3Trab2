@@ -1,11 +1,11 @@
 package domain;
 
 public class RegisterElement {
-    public boolean Busy;
-    public Integer Value;
+    public boolean busy;
+    public Byte value;
 
     public RegisterElement() {
-        Busy = false;
-        Value= null;
+        busy = false;
+        value = null;
     }
 }

@@ -1,46 +1,46 @@
 package domain;
 
 public class InstructionElement {
-    public InstructionTypeEnum Instruction;
-    public RegisterElement RegisterA;
-    public Integer ValueA;
-    public RegisterElement RegisterB;
-    public Integer ValueB;
-    public RegisterElement Destiny;
+    public InstructionTypeEnum instruction;
+    public RegisterElement registerA;
+    public Byte valueA;
+    public RegisterElement registerB;
+    public Byte valueB;
+    public RegisterElement destiny;
 
     public InstructionElement(InstructionTypeEnum instruction, RegisterElement paramA, RegisterElement paramB, RegisterElement destiny) {
-        Instruction = instruction;
-        RegisterA = paramA;
-        ValueA = paramA.Value;
-        RegisterB = paramB;
-        ValueB = paramB.Value;
-        Destiny = destiny;
+        this.instruction = instruction;
+        registerA = paramA;
+        valueA = paramA.value;
+        registerB = paramB;
+        valueB = paramB.value;
+        this.destiny = destiny;
     }
 
-    public InstructionElement(InstructionTypeEnum instruction, RegisterElement paramA, Integer paramB, RegisterElement destiny) {
-        Instruction = instruction;
-        RegisterA = paramA;
-        ValueA = paramA.Value;
-        RegisterB = null;
-        ValueB = paramB;
-        Destiny = destiny;
+    public InstructionElement(InstructionTypeEnum instruction, RegisterElement paramA, Byte paramB, RegisterElement destiny) {
+        this.instruction = instruction;
+        registerA = paramA;
+        valueA = paramA.value;
+        registerB = null;
+        valueB = paramB;
+        this.destiny = destiny;
     }
 
-    public InstructionElement(InstructionTypeEnum instruction, Integer paramA, RegisterElement paramB, RegisterElement destiny) {
-        Instruction = instruction;
-        RegisterA = null;
-        ValueA = paramA;
-        RegisterB = paramB;
-        ValueB = paramB.Value;
-        Destiny = destiny;
+    public InstructionElement(InstructionTypeEnum instruction, Byte paramA, RegisterElement paramB, RegisterElement destiny) {
+        this.instruction = instruction;
+        registerA = null;
+        valueA = paramA;
+        registerB = paramB;
+        valueB = paramB.value;
+        this.destiny = destiny;
     }
 
-    public InstructionElement(InstructionTypeEnum instruction, Integer paramA, Integer paramB, RegisterElement destiny) {
-        Instruction = instruction;
-        RegisterA = null;
-        ValueA = paramA;
-        RegisterB = null;
-        ValueB = paramB;
-        Destiny = destiny;
+    public InstructionElement(InstructionTypeEnum instruction, Byte paramA, Byte paramB, RegisterElement destiny) {
+        this.instruction = instruction;
+        registerA = null;
+        valueA = paramA;
+        registerB = null;
+        valueB = paramB;
+        this.destiny = destiny;
     }
 }

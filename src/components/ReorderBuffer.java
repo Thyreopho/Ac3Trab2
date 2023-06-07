@@ -24,19 +24,19 @@ public class ReorderBuffer {
     }
 
     public void set(int index, InstructionElement instruction) {
-        var value = new ReorderBufferElement();
+        ReorderBufferElement value = new ReorderBufferElement();
         value.currentInstruction = instruction;
         reorderBuffer[index] = value;
     }
 
     public InstructionElement remove(int index) {
-        var removed = get(index).currentInstruction;
+        InstructionElement removed = get(index).currentInstruction;
         set(index, null);
         return removed;
     }
 
     public InstructionElement replace(int index, InstructionElement instruction) {
-        var removed = get(index).currentInstruction;
+        InstructionElement removed = get(index).currentInstruction;
         set(index, instruction);
         return removed;
     }
