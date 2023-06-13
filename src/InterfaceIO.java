@@ -1,5 +1,3 @@
-import java.util.function.Function;
-
 import components.InstructionsQueue;
 import components.ReorderBuffer;
 import components.ReservationStation;
@@ -43,6 +41,7 @@ public class InterfaceIO {
         lines[i++] = "│ Field │ Reorder # │ Busy │";
         lines[i++] = "├─┴─┴─┤";
         lines[i++] = "└─┘";
+        System.out.println(lines);
         // ┄ ┆
         //║ ═ ╔ ╗ ╚ ╝
         //└ ┘ ┌ ─ ┐ │ ├ ┤ ┬ ┴ ┼

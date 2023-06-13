@@ -1,12 +1,13 @@
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import components.InstructionsQueue;
+//import components.InstructionsQueue;
 import components.Register;
 import components.ReorderBuffer;
 import components.ReservationStation;
+import domain.InstructionElement;
+import domain.InstructionTypeEnum;
 import domain.RegisterElement;
-import domain.StatusEnum;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -16,13 +17,14 @@ public class App {
         Register registers = new Register(10);
         
         int bufferSize = 6;
-        InstructionsQueue instructionsQueue = InterfaceIO.readInstructions(bufferSize);
-        ReorderBuffer reorderBuffer = new ReorderBuffer(bufferSize, instructionsQueue.read());
+        //InstructionsQueue instructionsQueue = InterfaceIO.readInstructions(bufferSize);
+        //ReorderBuffer reorderBuffer = new ReorderBuffer(bufferSize, instructionsQueue.read());
         
         //Teste da interface - Buffer de reordenação
-        for(int i = 0; i < 10; i++){
-
-        }
+        RegisterElement reg = new RegisterElement();
+        InstructionElement inst = new InstructionElement(InstructionTypeEnum.ADD, reg, reg, reg);
+        List<InstructionElement> filaInstrucao = Arrays.asList(inst, inst, inst, inst, inst, inst);
+        ReorderBuffer reorderBuffer = new ReorderBuffer(bufferSize, filaInstrucao);
 
         //Teste da interface - Estação de reserva
 
@@ -38,7 +40,7 @@ public class App {
         //chamada de teste da interface
         InterfaceIO.renderTable(reorderBuffer, reservationStation, registers);
     }
-
+/* 
     public void funcaoTempo(){
         ReservationStation reservationStation = new ReservationStation(null, null);
         Register registers = new Register(10);
@@ -50,7 +52,7 @@ public class App {
         int pointerReorderBuffer = 0;
         if(reorderBuffer.size() > 0){
             Boolean inserted = false;
-            var item = reorderBuffer.get(pointerReorderBuffer);
+            ReorderBufferElement item = reorderBuffer.get(pointerReorderBuffer);
             //inserted = reservationStation.Add(item.currentInstruction);
             if(inserted){
                 item.state = StatusEnum.Commit;
@@ -58,7 +60,7 @@ public class App {
             pointerReorderBuffer++;
 
 
-        }
-    }
+        } 
+    }*/
 
 }
