@@ -1,66 +1,65 @@
 package components;
 
-import domain.InstructionElement;
-import domain.InstructionTypeEnum;
+import java.util.ArrayList;
+import java.util.List;
 import domain.ReservationStationElement;
 
 public class ReservationStation {
 
-    private int size = 7;
-    private ReservationStationElement[] data = new ReservationStationElement[size];
+    private Runnable runnable;
+    private List<ReservationStationElement> data;
 
-    // TODO: ReservationStationElement deve ser instanciado com "new ReservationStationElement()"
-    public ReservationStation() {
-        int aux = 0;
-        data[aux].name = "Load1";
-        data[aux].acceptedTypes[0] = InstructionTypeEnum.LW;
-        data[aux].acceptedTypes[1] = InstructionTypeEnum.SW;
-        aux++;
-
-        data[aux].name = "Load2";
-        data[aux].acceptedTypes[0] = InstructionTypeEnum.LW;
-        data[aux].acceptedTypes[1] = InstructionTypeEnum.SW;
-        aux++;
-
-        data[aux].name = "Add1";
-        data[aux].acceptedTypes[0] = InstructionTypeEnum.ADD;
-        data[aux].acceptedTypes[1] = InstructionTypeEnum.ADDI;
-        data[aux].acceptedTypes[2] = InstructionTypeEnum.SUB;
-        aux++;
-
-        data[aux].name = "Add2";
-        data[aux].acceptedTypes[0] = InstructionTypeEnum.ADD;
-        data[aux].acceptedTypes[1] = InstructionTypeEnum.ADDI;
-        data[aux].acceptedTypes[2] = InstructionTypeEnum.SUB;
-        aux++;
-        
-        data[aux].name = "Add3";
-        data[aux].acceptedTypes[0] = InstructionTypeEnum.ADD;
-        data[aux].acceptedTypes[1] = InstructionTypeEnum.ADDI;
-        data[aux].acceptedTypes[2] = InstructionTypeEnum.SUB;
-        aux++;
-        
-        data[aux].name = "Mult1";
-        data[aux].acceptedTypes[0] = InstructionTypeEnum.MUL;
-        data[aux].acceptedTypes[1] = InstructionTypeEnum.DIV;
-        aux++;
-
-        data[aux].name = "Mult2";
-        data[aux].acceptedTypes[0] = InstructionTypeEnum.MUL;
-        data[aux].acceptedTypes[1] = InstructionTypeEnum.DIV;
-
-        for(int i = 0; i < size; i++){
-            data[i].busy = false;
-            data[i].currentInstruction = null;
-        }
+    public ReservationStation(Integer size, Runnable runnable) {
+        this.data = new ArrayList<ReservationStationElement>(size);
+        this.runnable = runnable;
     }
 
-    public boolean Add(InstructionElement instruction) {
+    public void addRSLoad(String name, Clock clock) {
+        ReservationStationElement rs = new ReservationStationElement(name, 5, clock);
+        rs.setFunction((instruction) -> {
+            this.runnable.run();
+        });
+        this.data.add(rs);
+    }
+
+    public void addRSAdd(String name, Clock clock) {
+        ReservationStationElement rs = new ReservationStationElement(name, 5, clock);
+        rs.setFunction((instruction) -> {
+            switch (instruction.instruction) {
+                case ADD:
+                    instruction.destiny.value = (byte) (instruction.valueA + instruction.valueB);
+                    break;
+                case SUB:
+                    instruction.destiny.value = (byte) (instruction.valueA - instruction.valueB);
+                    break;
+            }
+            this.runnable.run();
+        });
+        this.data.add(rs);
+    }
+
+    public void addRSMult(String name, Clock clock) {
+        ReservationStationElement rs = new ReservationStationElement(name, 5, clock);
+        rs.setFunction((instruction) -> {
+            switch (instruction.instruction) {
+                case MUL:
+                    instruction.destiny.value = (byte) (instruction.valueA * instruction.valueB);
+                    break;
+                case DIV:
+                    instruction.destiny.value = (byte) (instruction.valueA / instruction.valueB);
+                    break;
+            }
+            this.runnable.run();
+        });
+        this.data.add(rs);
+    }
+
+    /* public boolean Add(InstructionElement instruction) {
         var type = instruction.instruction;
         for (var station : data) {
-            if(!station.busy){
-                for (var acceptedTypes : station.acceptedTypes){
-                    if(acceptedTypes == type){
+            if (!station.busy) {
+                for (var acceptedTypes : station.acceptedTypes) {
+                    if (acceptedTypes == type) {
                         station.busy = true;
                         station.currentInstruction = instruction;
                         return true;
@@ -69,5 +68,5 @@ public class ReservationStation {
             }
         }
         return false;
-    }
+    } */
 }

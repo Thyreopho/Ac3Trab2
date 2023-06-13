@@ -10,7 +10,9 @@ import domain.StatusEnum;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        ReservationStation reservationStation = new ReservationStation();
+        ReservationStation reservationStation = new ReservationStation(7, () -> {
+            // On value returned -> render screen
+        });
         Register registers = new Register(10);
         
         int bufferSize = 6;
@@ -38,7 +40,7 @@ public class App {
     }
 
     public void funcaoTempo(){
-        ReservationStation reservationStation = new ReservationStation();
+        ReservationStation reservationStation = new ReservationStation(null, null);
         Register registers = new Register(10);
         
         int bufferSize = 6;
@@ -49,7 +51,7 @@ public class App {
         if(reorderBuffer.size() > 0){
             Boolean inserted = false;
             var item = reorderBuffer.get(pointerReorderBuffer);
-            inserted = reservationStation.Add(item.currentInstruction);
+            //inserted = reservationStation.Add(item.currentInstruction);
             if(inserted){
                 item.state = StatusEnum.Commit;
             }
