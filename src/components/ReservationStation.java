@@ -2,28 +2,40 @@ package components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+
+import domain.InstructionElement;
+import domain.InstructionTypeEnum;
 import domain.ReservationStationElement;
 
 public class ReservationStation {
 
-    private Runnable runnable;
+    private Consumer<ReservationStation> runnable;
     private List<ReservationStationElement> data;
 
-    public ReservationStation(Integer size, Runnable runnable) {
+    public ReservationStation(Integer size, Consumer<ReservationStation> runnable) {
         this.data = new ArrayList<ReservationStationElement>(size);
         this.runnable = runnable;
     }
 
     public void addRSLoad(String name, Clock clock) {
-        ReservationStationElement rs = new ReservationStationElement(name, 5, clock);
+        InstructionTypeEnum[] restrains = {
+            InstructionTypeEnum.LW,
+            InstructionTypeEnum.SW
+        };
+        ReservationStationElement rs = new ReservationStationElement(name, 5, clock, restrains);
         rs.setFunction((instruction) -> {
-            this.runnable.run();
+            this.runnable.accept(this);
         });
         this.data.add(rs);
     }
 
     public void addRSAdd(String name, Clock clock) {
-        ReservationStationElement rs = new ReservationStationElement(name, 5, clock);
+        InstructionTypeEnum[] restrains = {
+            InstructionTypeEnum.ADD,
+            InstructionTypeEnum.SUB
+        };
+        ReservationStationElement rs = new ReservationStationElement(name, 5, clock, restrains);
         rs.setFunction((instruction) -> {
             switch (instruction.instruction) {
                 case ADD:
@@ -33,13 +45,17 @@ public class ReservationStation {
                     instruction.destiny.value = (byte) (instruction.valueA - instruction.valueB);
                     break;
             }
-            this.runnable.run();
+            this.runnable.accept(this);
         });
         this.data.add(rs);
     }
 
     public void addRSMult(String name, Clock clock) {
-        ReservationStationElement rs = new ReservationStationElement(name, 5, clock);
+        InstructionTypeEnum[] restrains = {
+            InstructionTypeEnum.MUL,
+            InstructionTypeEnum.DIV
+        };
+        ReservationStationElement rs = new ReservationStationElement(name, 5, clock, restrains);
         rs.setFunction((instruction) -> {
             switch (instruction.instruction) {
                 case MUL:
@@ -49,24 +65,16 @@ public class ReservationStation {
                     instruction.destiny.value = (byte) (instruction.valueA / instruction.valueB);
                     break;
             }
-            this.runnable.run();
+            this.runnable.accept(this);
         });
         this.data.add(rs);
     }
 
-    /* public boolean Add(InstructionElement instruction) {
-        var type = instruction.instruction;
-        for (var station : data) {
-            if (!station.busy) {
-                for (var acceptedTypes : station.acceptedTypes) {
-                    if (acceptedTypes == type) {
-                        station.busy = true;
-                        station.currentInstruction = instruction;
-                        return true;
-                    }
-                }
-            }
+    public boolean put(InstructionElement instruction) {
+        boolean response = false;
+        for (int i = 0; i < data.size() && !response; i++) {
+            response = data.get(i).setInstruction(instruction);
         }
-        return false;
-    } */
+        return response;
+    }
 }

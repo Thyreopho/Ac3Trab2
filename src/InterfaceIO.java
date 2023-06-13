@@ -1,12 +1,15 @@
+import java.util.ArrayList;
+
 import components.InstructionsQueue;
 import components.ReorderBuffer;
 import components.ReservationStation;
+import domain.InstructionElement;
 import components.Register;
 
 public class InterfaceIO {
 
     public static InstructionsQueue readInstructions(int bufferSize) {
-        return null;
+        return new InstructionsQueue(bufferSize, new ArrayList<InstructionElement>(0));
     }
 
     /* private static String iterationToString(int size, Function<Integer, String> exe) {

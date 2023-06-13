@@ -8,6 +8,7 @@ public class ReservationStationElement {
 
     public String name;
 
+    private InstructionTypeEnum[] restrains;
     private InstructionElement currentInstruction;
     private Consumer<InstructionElement> function;
 
@@ -18,9 +19,11 @@ public class ReservationStationElement {
     public ReservationStationElement(
             String name,
             Integer tickOffset,
-            Clock clock) {
+            Clock clock,
+            InstructionTypeEnum[] restrains) {
         this.name = name;
 
+        this.restrains = restrains;
         this.currentInstruction = null;
         this.function = null;
 
@@ -39,9 +42,17 @@ public class ReservationStationElement {
         this.function = function;
     }
 
+    private boolean canProcess(InstructionElement instruction) {
+        boolean response = false;
+        for (int i = 0; i < restrains.length && !response; i++) {
+            response = this.restrains[i] == instruction.instruction;
+        }
+        return response;
+    }
+
     public boolean setInstruction(InstructionElement instruction) {
         boolean response = !this.isBusy();
-        if (response) {
+        if (response && this.canProcess(instruction)) {
             this.targetTick = this.currTick + this.tickOffset;
             this.currentInstruction = instruction;
         }
