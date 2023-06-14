@@ -9,7 +9,7 @@ public class Register {
     public Register(int size) {
         data = new RegisterElement[size];
         for(int i = 0; i < size; i++){
-            RegisterElement reg = new RegisterElement();
+            RegisterElement reg = new RegisterElement(i);
              data[i] = reg;
         }
     }

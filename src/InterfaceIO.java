@@ -1,15 +1,44 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import components.InstructionsQueue;
 import components.ReorderBuffer;
 import components.ReservationStation;
 import domain.InstructionElement;
+import domain.InstructionTypeEnum;
+import domain.RegisterElement;
 import components.Register;
 
 public class InterfaceIO {
 
-    public static InstructionsQueue readInstructions(int bufferSize) {
-        return new InstructionsQueue(bufferSize, new ArrayList<InstructionElement>(0));
+    public static InstructionsQueue readInstructions(int bufferSize) throws IOException {
+        ArrayList<InstructionElement> instructionList = new ArrayList<InstructionElement>(0);
+
+        BufferedReader buffRead = new BufferedReader(new FileReader("C:\\Users\\1216531\\Desktop\\Trace.txt"));
+		String linha = "";
+		while (true) {
+			if (linha != null) {
+				System.out.println(linha);
+                String[] infs = linha.split(" ");
+                if(infs.length > 2){
+                    InstructionTypeEnum command = infs[0].equals(InstructionTypeEnum.ADD.toString()) ? InstructionTypeEnum.ADD : infs[0].equals(InstructionTypeEnum.SUB.toString()) ? InstructionTypeEnum.SUB : infs[0].equals(InstructionTypeEnum.ADDI.toString()) ? InstructionTypeEnum.ADDI : infs[0].equals(InstructionTypeEnum.MUL.toString()) ? InstructionTypeEnum.MUL : infs[0].equals(InstructionTypeEnum.DIV.toString()) ? InstructionTypeEnum.DIV : infs[0].equals(InstructionTypeEnum.LW.toString()) ? InstructionTypeEnum.LW : infs[0].equals(InstructionTypeEnum.SW.toString()) ? InstructionTypeEnum.SW : infs[0].equals(InstructionTypeEnum.J.toString()) ? InstructionTypeEnum.J : infs[0].equals(InstructionTypeEnum.BNE.toString()) ? InstructionTypeEnum.BNE : InstructionTypeEnum.BEQ;
+                    RegisterElement param1 = new RegisterElement(Integer.parseInt(infs[2].replace("R", "")));
+                    RegisterElement param2 = new RegisterElement(Integer.parseInt(infs[3].replace("(", "").replace(")", "").replace("R", "")));
+                    RegisterElement dest = new RegisterElement(Integer.parseInt(infs[1].replace("R", "")));
+
+                    InstructionElement instruction = new InstructionElement(command, param1, param2, dest);
+
+                    instructionList.add(instruction);
+                }
+			} else
+				break;
+			linha = buffRead.readLine();
+		}
+		buffRead.close();
+
+        return new InstructionsQueue(bufferSize, instructionList);
     }
 
     /* private static String iterationToString(int size, Function<Integer, String> exe) {
