@@ -1,9 +1,4 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Scanner;
-
 import components.Clock;
-import components.InstructionsQueue;
 import components.Register;
 import components.ReorderBuffer;
 import components.ReservationStation;
@@ -14,12 +9,9 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         Clock clock = new Clock();
-        InstructionsQueue instructionsQueue = InterfaceIO.readInstructions(bufferSize);
         Register register = new Register(10);
-        ReorderBuffer reorderBuffer = new ReorderBuffer(bufferSize, instructionsQueue.read());
-        ReservationStation reservationStation = new ReservationStation(8, (rs) -> {
-            InterfaceIO.renderTable(reorderBuffer, rs, register);
-        });
+        ReorderBuffer reorderBuffer = new ReorderBuffer(InterfaceIO.readInstructions(bufferSize, clock), clock);
+        ReservationStation reservationStation = new ReservationStation(8, reorderBuffer, clock);
         
         char key;
         do {

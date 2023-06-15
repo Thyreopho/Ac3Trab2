@@ -2,20 +2,21 @@ package components;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import domain.InstructionElement;
 import domain.InstructionTypeEnum;
 import domain.ReservationStationElement;
+import domain.StatusEnum;
 
 public class ReservationStation {
 
-    private Consumer<ReservationStation> runnable;
     private List<ReservationStationElement> data;
+    private ReorderBuffer reorderBuffer;
 
-    public ReservationStation(Integer size, Consumer<ReservationStation> runnable) {
+    public ReservationStation(Integer size, ReorderBuffer reorderBuffer, Clock clock) {
         this.data = new ArrayList<ReservationStationElement>(size);
-        this.runnable = runnable;
+        this.reorderBuffer = reorderBuffer;
+        clock.add((tick) -> this.onTick(tick));
     }
 
     public void addRSLoad(String name, Clock clock) {
@@ -25,7 +26,7 @@ public class ReservationStation {
         };
         ReservationStationElement rs = new ReservationStationElement(name, 5, clock, restrains);
         rs.setFunction((instruction) -> {
-            this.runnable.accept(this);
+            this.commit(instruction);
         });
         this.data.add(rs);
     }
@@ -45,7 +46,7 @@ public class ReservationStation {
                     instruction.destiny.value = (byte) (instruction.valueA - instruction.valueB);
                     break;
             }
-            this.runnable.accept(this);
+            this.commit(instruction);
         });
         this.data.add(rs);
     }
@@ -65,9 +66,13 @@ public class ReservationStation {
                     instruction.destiny.value = (byte) (instruction.valueA / instruction.valueB);
                     break;
             }
-            this.runnable.accept(this);
+            this.commit(instruction);
         });
         this.data.add(rs);
+    }
+
+    private void commit(InstructionElement instruction) {
+        instruction.status = StatusEnum.Commit;
     }
 
     public boolean put(InstructionElement instruction) {
@@ -76,5 +81,16 @@ public class ReservationStation {
             response = data.get(i).setInstruction(instruction);
         }
         return response;
+    }
+
+    private void onTick(Integer tick) {
+        InstructionElement instructionElement = reorderBuffer.get();
+        if (instructionElement != null) {
+            this.put(instructionElement);
+        }
+    }
+
+    public int size() {
+        return this.data.size();
     }
 }

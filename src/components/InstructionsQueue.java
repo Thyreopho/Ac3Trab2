@@ -8,7 +8,7 @@ import domain.InstructionElement;
 //TODO: não descartar elementos da fila, a mesma deve permitir desvios para linhas anteriores
 public class InstructionsQueue {
 
-    private Integer bufferSize;
+    public Integer bufferSize;
     private List<InstructionElement> data;
 
     public InstructionsQueue(int bufferSize, List<InstructionElement> data) {

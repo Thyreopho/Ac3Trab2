@@ -55,6 +55,7 @@ public class ReservationStationElement {
         if (response && this.canProcess(instruction)) {
             this.targetTick = this.currTick + this.tickOffset;
             this.currentInstruction = instruction;
+            this.currentInstruction.status = StatusEnum.Execute;
         }
         return response;
     }
